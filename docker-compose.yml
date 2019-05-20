@@ -1,0 +1,53 @@
+version: "3"
+services:
+    actors-db:
+        image: "mcr.microsoft.com/mssql/server:2017-CU14-ubuntu"
+        ports:
+            - "1433:1433"
+        volumes:
+            - actors_db:/var/opt/mssql
+        environment:
+            SA_PASSWORD: "Your_password123"
+            ACCEPT_EULA: "Y"
+    titles-db:
+        image: "mcr.microsoft.com/mssql/server:2017-CU14-ubuntu"
+        ports:
+            - "1434:1433"
+        volumes:
+            - titles_db:/var/opt/mssql
+        environment:
+            SA_PASSWORD: "Your_password123"
+            ACCEPT_EULA: "Y"
+    actors-migrate:
+        restart: "no"
+        build:
+            context: .
+            dockerfile: docker/actors-migrate/dockerfile
+        depends_on:
+            - actors-db
+    titles-migrate:
+        restart: "no"
+        build:
+            context: .
+            dockerfile: docker/titles-migrate/dockerfile
+        depends_on:
+            - titles-db
+    actors-api:
+        build:
+            context: .
+            dockerfile: docker/actors-api/dockerfile
+        ports:
+            - "8080:80"
+        depends_on:
+            - actors-db
+    titles-api:
+        build:
+            context: .
+            dockerfile: docker/titles-api/dockerfile
+        ports:
+            - "8081:80"
+        depends_on:
+            - titles-db
+volumes:
+  actors_db:
+  titles_db:

@@ -38,6 +38,10 @@ Each microservice has a migration tool assembly in src/tools/{Service}migration.
 
 docker-compose will execute the migration tools on startup.
 
+## Message Queue.
+
+Active MQ is used to communicate between services. Right now the two web api services will produce messages that a mock background task will consume and print out.
+
 ### Creating a migration
 
 efcore has a cli tool we can use to generate migrations.

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
 
+using Apache.NMS;
+using Apache.NMS.Util;
+
 namespace IMDBDegrees.Web.Titles.Controllers
 {
     [Route("api/[controller]")]
@@ -34,10 +37,7 @@ namespace IMDBDegrees.Web.Titles.Controllers
                     producer.DeliveryMode = MsgDeliveryMode.Persistent;
                         
                     // Send a message
-                    ITextMessage request = session.CreateTextMessage("Hello World!");
-                    request.NMSCorrelationID = "abc";
-                    request.Properties["NMSXGroupID"] = "cheese";
-                    request.Properties["myHeader"] = "Cheddar";
+                    ITextMessage request = session.CreateTextMessage("Message from title api service.");
 
                     producer.Send(request);
                 }

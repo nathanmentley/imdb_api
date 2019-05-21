@@ -35,6 +35,8 @@ namespace mockBackgroundProcess1
                         }
                         else
                         {
+                            message.Acknowledge();
+
                             Console.WriteLine("Received message with ID:   " + message.NMSMessageId);
                             Console.WriteLine("Received message with text: " + message.Text);
                         }

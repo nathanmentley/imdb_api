@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+using Apache.NMS;
+using Apache.NMS.Util;
+
 using IMDBDegrees.DAL.Actors;
 using IMDBDegrees.DAL.Actors.Models;
 
@@ -36,7 +39,36 @@ namespace IMDBDegrees.Web.Actors.Controllers
                 query = query.Where(x => EF.Functions.Like(x.Name, $"%{name}%"));
             }
 
+            SendMessageToBackgroundProcess();
+
             return query.Take(100).ToList();
+        }
+
+        private void SendMessageToBackgroundProcess() {
+            //TODO: this is copid alot. This boiler plate code should be in a common shared class and setup using the same DI setup that the db context goes through.
+            Uri connecturi = new Uri("activemq:tcp://activemq:61616");
+            
+            // NOTE: ensure the nmsprovider-activemq.config file exists in the executable folder.
+            IConnectionFactory factory = new NMSConnectionFactory(connecturi);
+
+            using(IConnection connection = factory.CreateConnection())
+            using(ISession session = connection.CreateSession())
+            {
+                IDestination destination = SessionUtil.GetDestination(session, "queue://FOO.BAR");
+
+                // Create a consumer and producer
+                using(IMessageProducer producer = session.CreateProducer(destination))
+                {
+                    // Start the connection so that messages will be processed.
+                    connection.Start();
+                    producer.DeliveryMode = MsgDeliveryMode.Persistent;
+                        
+                    // Send a message
+                    ITextMessage request = session.CreateTextMessage("Message from actor api service.");
+
+                    producer.Send(request);
+                }
+            }
         }
     }
 }

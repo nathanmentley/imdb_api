@@ -36,7 +36,7 @@ namespace IMDBDegrees.Web.Titles
 
             services.AddDbContext<TitleContext>(options =>
                 options.UseSqlServer(
-                    @"Server=titles-db;Database=Titles;User=sa;Password=Your_password123"
+                    Configuration.GetConnectionString("ConnectionString")
                 )
             );
         }

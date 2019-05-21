@@ -36,7 +36,7 @@ namespace IMDBDegrees.Web.Actors
 
             services.AddDbContext<ActorContext>(options =>
                 options.UseSqlServer(
-                    @"Server=actors-db;Database=Actors;User=sa;Password=Your_password123"
+                    Configuration.GetConnectionString("ConnectionString")
                 )
             );
         }

@@ -11,6 +11,8 @@ namespace IMDBDegrees.DAL.Titles
     {
         public TitleContext(DbContextOptions<TitleContext> options): base(options){}
 
-        public DbSet<Person> Persons { get; set; }
+        public DbSet<Genre> Genres { get; set; }
+        public DbSet<Title> Titles { get; set; }
+        public DbSet<Models.Type> Types { get; set; }
     }
 }

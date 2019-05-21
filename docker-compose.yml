@@ -25,6 +25,8 @@ services:
             dockerfile: docker/actors-migrate/dockerfile
         depends_on:
             - actors-db
+        volumes:
+            - ./data:/data
     titles-migrate:
         restart: "no"
         build:
@@ -32,6 +34,8 @@ services:
             dockerfile: docker/titles-migrate/dockerfile
         depends_on:
             - titles-db
+        volumes:
+            - ./data:/data
     actors-api:
         build:
             context: .

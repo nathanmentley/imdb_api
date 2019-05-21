@@ -1,5 +1,10 @@
 version: "3"
 services:
+    activemq:
+        image: "rmohr/activemq:5.15.6"
+        ports:
+            - "61616:61616"
+            - "8161:8161"
     actors-db:
         image: "mcr.microsoft.com/mssql/server:2017-CU14-ubuntu"
         ports:
@@ -44,6 +49,7 @@ services:
             - "8080:80"
         depends_on:
             - actors-db
+            - activemq
     titles-api:
         build:
             context: .
@@ -52,6 +58,15 @@ services:
             - "8081:80"
         depends_on:
             - titles-db
+            - activemq
+    background-process:
+        restart: "no"
+        build:
+            context: .
+            dockerfile: docker/mockbackgroundProcess1/dockerfile
+        depends_on:
+            - activemq
+
 volumes:
   actors_db:
   titles_db:

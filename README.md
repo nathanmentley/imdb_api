@@ -10,16 +10,25 @@ docker-compose up
 
 ### Development
 
-For local development, I'm currently spinning up everything with docker-compose and then building the single service I'm working on locally using the standard dotent utils.
+For local development, I'm currently spinning up everything with docker-compose and then building the single service I'm working on locally using the standard dotnet utils.
+
+Example, I'd just run dotnet run in the src/web/actors directory.
 
 ## Services
 
 ### Actor
 
+Imports and exposes data around personal details around actors and cast members.
 
+tools/actormigration will setup and import actor data.
+web/actors spins up a rest api around the actor data.
 
 ### Titles
 
+Imports and exposes data around shows/movies/media.
+
+tools/titlemigration will setup and import movie/tvshow data.
+web/titles spins up a rest api around the movie/tvshow data.
 
 ## Databases
 

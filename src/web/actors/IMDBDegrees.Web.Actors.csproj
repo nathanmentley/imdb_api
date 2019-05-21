@@ -10,6 +10,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
 
     <ProjectReference Include="..\..\dal\actors\IMDBDegrees.DAL.Actors.csproj" />
+    <ProjectReference Include="..\..\common\IMDBDegrees.Common.csproj" />
   </ItemGroup>
 
 </Project>

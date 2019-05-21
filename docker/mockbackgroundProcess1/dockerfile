@@ -1,9 +1,9 @@
-FROM microsoft/dotnet:sdk AS build-env-titles
+FROM microsoft/dotnet:sdk AS build-env
 WORKDIR /app
 
 # Copy csproj and restore as distinct layers
 COPY ./src ./
-WORKDIR /app/tools/titlemigration
+WORKDIR /app/tasks/mockBackgroundProcess1
 RUN dotnet restore
 
 # Copy everything else and build
@@ -12,5 +12,6 @@ RUN dotnet publish -c Release -o out
 # Build runtime image
 FROM microsoft/dotnet:aspnetcore-runtime
 WORKDIR /app
-COPY --from=build-env-titles /app/tools/titlemigration/out .
-ENTRYPOINT ["dotnet", "IMDBDegrees.Tools.TitleMigration.dll"]
+COPY --from=build-env /app/tasks/mockBackgroundProcess1/out .
+ENTRYPOINT ["dotnet", "mockBackgroundProcess1.dll"]
+
